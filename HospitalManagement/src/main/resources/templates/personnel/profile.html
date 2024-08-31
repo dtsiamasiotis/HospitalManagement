@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}"/>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table class="table table-striped" th:object="${personnel}">
+    <tr>
+        <th>Clinic id</th>
+        <td><b th:text="*{clinicId}"></b></td>
+    </tr>
+    <tr>
+        <th>Occupation</th>
+        <td><b th:text="*{occupation}"></b></td>
+    </tr>
+
+</table>
+
+<script src="webjars/5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

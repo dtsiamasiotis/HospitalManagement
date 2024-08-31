@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}"/>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:object="${patient}" th:action="@{/patients/profile}" class="form-horizontal" id="add-patient-form" method="post">
+<input type="hidden" th:field="*{id}"/>
+    <input type="hidden" th:field="*{firstName}"/>
+    <input type="hidden" th:field="*{lastName}"/>
+    <table class="table table-striped" th:object="${patient}">
+    <tr>
+        <th>First Name</th>
+        <td><b th:text="*{firstName}"></b></td>
+    </tr>
+    <tr>
+        <th>Last Name</th>
+        <td><b th:text="*{lastName}"></b></td>
+    </tr>
+
+</table>
+    <div class="col-md-1 text-end">
+        <!--<button type="button"  th:onclick="|window.location.href='/patients/profile?visits=true?patient='+${patient}|" class="btn btn-outline-primary me-2">Show Visits</button>-->
+        <button class="btn btn-primary" type="submit" name="edit">Edit</button>
+        <button class="btn btn-primary" type="submit" name="showVisits">Show visits</button>
+    </div>
+</form>
+<div class="container-mt3">
+<table th:if = "${visits}!=null" class="table table-striped">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="visit : ${visits}">
+        <td th:text="${visit.id}"></td>
+        <td th:text="${visit.status}"></td>
+    </tr>
+    </tbody>
+</table>
+</div>
+
+
+<script src="webjars/5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+
+</body>
+</html>

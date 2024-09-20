@@ -27,7 +27,7 @@ public class PersonnelManagementService {
         return restTemplate.getForObject("http://localhost:8080/getPersonnelById?id=" + id, Personnel.class);
     }
 
-    @Scheduled(cron="*/10 * * * * *")
+    @Scheduled(cron="${compensation.cron.expression}")
     public void calculateMonthlyCompensation() {
         restTemplate.getForObject("http://localhost:8080/calculateMonthlyCompensation", String.class);
     }

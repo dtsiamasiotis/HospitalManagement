@@ -82,16 +82,12 @@
         <table class="table table-hover">
             <thead>
             <tr>
-                <th>Id</th>
-                <th>Patient id</th>
-                <th>Clinic</th>
+                <th>Clinic id</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="patient : ${patients}" th:onclick="'javascript:rowClicked(\'' + ${patient.id} + '\');'">
-                <td th:text="${patient.id}"></td>
-                <td th:text="${patient.firstName}"></td>
-                <td th:text="${patient.lastName}"></td>
+            <tr th:each="admission : ${admissions}">
+                <td th:text="${admission.clinic.id}"></td>
             </tr>
             </tbody>
         </table>
@@ -107,11 +103,7 @@
 
 
 <script src="webjars/5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    function rowClicked(value) {
-        location.href = "/patients/profile?id=" + value;
-    }
-</script>
+
 
 
 </body>

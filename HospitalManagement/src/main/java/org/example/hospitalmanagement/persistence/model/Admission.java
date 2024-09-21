@@ -1,9 +1,11 @@
 package org.example.hospitalmanagement.persistence.model;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.Data;
+import org.example.hospitalmanagement.business.patients.Patient;
 
+@Entity
+@Data
 public class Admission {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -12,6 +14,7 @@ public class Admission {
     private AdmissionStatus status;
 
     private Long patientId;
-
-    private Long clinicId;
+    @ManyToOne
+    @JoinColumn(name = "clinic_id", referencedColumnName = "id")
+    private Clinic clinic;
 }

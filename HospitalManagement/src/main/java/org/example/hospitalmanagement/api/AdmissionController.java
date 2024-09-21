@@ -1,5 +1,8 @@
 package org.example.hospitalmanagement.api;
 
+import org.example.hospitalmanagement.business.AdmissionFormData;
+import org.example.hospitalmanagement.business.clinics.ClinicManagementService;
+import org.example.hospitalmanagement.business.patients.AdmissionManagementService;
 import org.example.hospitalmanagement.business.patients.Patient;
 import org.example.hospitalmanagement.business.patients.PatientManagementService;
 import org.example.hospitalmanagement.business.patients.VisitManagementService;
@@ -11,16 +14,17 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class AdmissionController {
 
-    private PatientManagementService patientManagementService;
-    private VisitManagementService visitManagementService;
+      private AdmissionManagementService admissionManagementService;
+      private ClinicManagementService clinicManagementService;
+   // private VisitManagementService visitManagementService;
 
-    public AdmissionController(PatientManagementService patientManagementService, VisitManagementService visitManagementService) {
-        this.patientManagementService = patientManagementService;
-        this.visitManagementService = visitManagementService;
+    public AdmissionController(AdmissionManagementService admissionManagementService, ClinicManagementService clinicManagementService) {
+        this.admissionManagementService = admissionManagementService;
+        this.clinicManagementService = clinicManagementService;
     }
 
 
-    @RequestMapping("patients/list")
+  /*  @RequestMapping("patients/list")
     public String listPatients(Model model) {
         model.addAttribute("patients",patientManagementService.getAllPatients());
         return "patients/list";
@@ -46,18 +50,27 @@ public class AdmissionController {
        // }
         model.addAttribute("patient", patient);
         return "patients/test";
+    }*/
+    @RequestMapping("admissions/list")
+    public String listAdmissions(Model model) {
+      model.addAttribute("admissions", admissionManagementService.getAllAdmissions());
+      return "admissions/list";
     }
 
     @RequestMapping("admissions/showCreateForm")
     public String showCreateForm(Model model) {
         model.addAttribute("admission", new Admission());
+        model.addAttribute("clinics", clinicManagementService.getAllClinics());
         return "admissions/create";
     }
 
-    @PostMapping("patients/addNewPatient")
-    public String createPatient(@ModelAttribute Patient patient) {
-        patientManagementService.addPatient(patient);
-        return "redirect:/patients/list";
+    @PostMapping("admissions/addNewAdmission")
+    public String createAdmission(@ModelAttribute AdmissionFormData admissionFormData) {
+        Admission admission = new Admission();
+        admission.setPatientId(admissionFormData.getPatientId());
+        admission.setClinic(clinicManagementService.getClinicById(admissionFormData.getClinicId()).orElseThrow());
+        admissionManagementService.addAdmission(admission);
+        return "redirect:/admissions/list";
     }
 
 

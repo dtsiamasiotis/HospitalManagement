@@ -17,4 +17,7 @@ public class Clinic {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "clinic")
     private Set<Bed> beds;
 
+    private String name;
+
+
 }

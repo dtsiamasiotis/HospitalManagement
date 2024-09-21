@@ -1,5 +1,8 @@
 package org.example.hospitalmanagement.api;
 
+import org.example.hospitalmanagement.business.AdmissionFormData;
+import org.example.hospitalmanagement.business.clinics.ClinicManagementService;
+import org.example.hospitalmanagement.business.patients.AdmissionManagementService;
 import org.example.hospitalmanagement.business.patients.Patient;
 import org.example.hospitalmanagement.business.patients.PatientManagementService;
 import org.example.hospitalmanagement.business.patients.VisitManagementService;
@@ -11,12 +14,16 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class PatientController {
 
+    private final ClinicManagementService clinicManagementService;
     private PatientManagementService patientManagementService;
     private VisitManagementService visitManagementService;
+    private AdmissionManagementService admissionManagementService;
 
-    public PatientController (PatientManagementService patientManagementService, VisitManagementService visitManagementService) {
+    public PatientController (PatientManagementService patientManagementService, VisitManagementService visitManagementService, AdmissionManagementService admissionManagementService, ClinicManagementService clinicManagementService) {
         this.patientManagementService = patientManagementService;
         this.visitManagementService = visitManagementService;
+        this.admissionManagementService = admissionManagementService;
+        this.clinicManagementService = clinicManagementService;
     }
 
 
@@ -46,6 +53,17 @@ public class PatientController {
        // }
         model.addAttribute("patient", patient);
         return "patients/test";
+    }
+
+    @RequestMapping(value="patients/profile",method = RequestMethod.POST, params = "createAdmission")
+    public String createAdmissionForPatient(@ModelAttribute Patient patient, Model model) {
+        //if(visits) {
+        //     model.addAttribute("visits" ,visitManagementService.getVisitsByPatientId(patient.getId()));
+        // }
+        model.addAttribute("patient", patient);
+        model.addAttribute("clinics", clinicManagementService.getAllClinics());
+        model.addAttribute("admission", AdmissionFormData.builder().patientId(patient.getId()).build());
+        return "admissions/create";
     }
 
     @RequestMapping("patients/showCreateForm")

@@ -1,14 +1,15 @@
 package org.example.hospitalmanagement.api;
 
-import org.example.hospitalmanagement.business.AdmissionFormData;
+import jakarta.validation.Valid;
+import org.example.hospitalmanagement.persistence.model.AdmissionFormData;
 import org.example.hospitalmanagement.business.clinics.ClinicManagementService;
 import org.example.hospitalmanagement.business.patients.AdmissionManagementService;
 import org.example.hospitalmanagement.business.patients.Patient;
 import org.example.hospitalmanagement.business.patients.PatientManagementService;
 import org.example.hospitalmanagement.business.patients.VisitManagementService;
-import org.example.hospitalmanagement.persistence.model.Visit;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -73,7 +74,10 @@ public class PatientController {
     }
 
     @PostMapping("patients/addNewPatient")
-    public String createPatient(@ModelAttribute Patient patient) {
+    public String createPatient(@Valid @ModelAttribute Patient patient, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "patients/create";
+        }
         patientManagementService.addPatient(patient);
         return "redirect:/patients/list";
     }

@@ -1,6 +1,5 @@
 package org.example.hospitalmanagement.business.patients;
 
-import org.example.hospitalmanagement.business.AdmissionFormData;
 import org.example.hospitalmanagement.persistence.model.Admission;
 import org.example.hospitalmanagement.persistence.repositories.AdmissionRepository;
 import org.springframework.stereotype.Service;

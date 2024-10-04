@@ -7,13 +7,17 @@
 <h2>Admission</h2>
 <form th:object="${admission}" th:action="@{/admissions/addNewAdmission}" class="form-horizontal" id="add-patient-form" method="post">
     <div class="form-group has-feedback">
-        <label for="clinicId" class="form-label">Clinic Name</label>
         <div>
+        <label for="clinicId" class="form-label">Clinic</label>
             <select th:field="*{clinicId}" id="clinicId">
                 <option th:each="clinic : ${clinics}"
                         th:text="${clinic.name}"
                         th:value="${clinic.id}">
             </select>
+        </div>
+        <div>
+            <label for="admissionStartDate">Start date:</label>
+            <input type="date" th:field="${admission.startDate}" id="admissionStartDate"/>
         </div>
     <div>
         <input type="hidden" th:field="*{patientId}">

@@ -2,6 +2,11 @@
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
 
 <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}"/>
+<style>
+    .error {
+        color: red;
+    }
+</style>
 <body>
 
 <h2>Patient</h2>
@@ -11,11 +16,20 @@
         <input type="text" class="form-control" th:field="*{firstName}" id="newPatientFirstName" />
         <label for="newPatientLastName" class="form-label">Last Name</label>
         <input type="text" class="form-control" th:field="*{lastName}" id="newPatientLastName" />
+        <label for="newPatientEmail" class="form-label">Email</label>
+        <input type="text" class="form-control" th:field="*{email}" id="newPatientEmail" />
+        <label for="newPatientInsuranceNumber" class="form-label">Insurance Number</label>
+        <input type="text" class="form-control" th:field="*{insuranceNumber}" id="newPatientInsuranceNumber" th:errorclass="error"/>
+       <!-- <span class="help-block" th:if="${#fields.hasErrors('insuranceNumber')}">-->
+            <ul>
+                <li th:each="err : ${#fields.errors('insuranceNumber')}" th:text="${err}" class="error"/>
+            </ul>
+       <!-- </span>-->
     </div>
     <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
+        <div class="col-md-1 text-end">
             <button
-                    class="btn btn-primary" type="submit">Add
+                    class="btn btn-outline-primary me-2" type="submit">Add
                 Patient</button>
         </div>
     </div>

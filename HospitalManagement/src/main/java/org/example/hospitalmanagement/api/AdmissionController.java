@@ -1,11 +1,8 @@
 package org.example.hospitalmanagement.api;
 
-import org.example.hospitalmanagement.business.AdmissionFormData;
+import org.example.hospitalmanagement.persistence.model.AdmissionFormData;
 import org.example.hospitalmanagement.business.clinics.ClinicManagementService;
 import org.example.hospitalmanagement.business.patients.AdmissionManagementService;
-import org.example.hospitalmanagement.business.patients.Patient;
-import org.example.hospitalmanagement.business.patients.PatientManagementService;
-import org.example.hospitalmanagement.business.patients.VisitManagementService;
 import org.example.hospitalmanagement.persistence.model.Admission;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -59,7 +56,7 @@ public class AdmissionController {
 
     @RequestMapping("admissions/showCreateForm")
     public String showCreateForm(Model model) {
-        model.addAttribute("admission", new Admission());
+        model.addAttribute("admission", AdmissionFormData.builder().build());
         model.addAttribute("clinics", clinicManagementService.getAllClinics());
         return "admissions/create";
     }
@@ -69,6 +66,7 @@ public class AdmissionController {
         Admission admission = new Admission();
         admission.setPatientId(admissionFormData.getPatientId());
         admission.setClinic(clinicManagementService.getClinicById(admissionFormData.getClinicId()).orElseThrow());
+        admission.setStartDate(admissionFormData.getStartDate());
         admissionManagementService.addAdmission(admission);
         return "redirect:/admissions/list";
     }

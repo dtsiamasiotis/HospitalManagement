@@ -11,7 +11,7 @@ public class MainController {
 
 
 
-    @PostMapping("dashboard")
+    @RequestMapping("dashboard")
     public String showDashboard() {
         return "dashboard";
     }

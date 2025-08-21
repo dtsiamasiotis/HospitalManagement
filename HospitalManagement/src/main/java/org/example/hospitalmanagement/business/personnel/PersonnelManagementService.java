@@ -1,6 +1,5 @@
 package org.example.hospitalmanagement.business.personnel;
 
-import org.example.hospitalmanagement.business.patients.Patient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;

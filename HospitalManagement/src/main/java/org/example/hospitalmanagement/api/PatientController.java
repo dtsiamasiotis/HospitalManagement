@@ -4,9 +4,12 @@ import jakarta.validation.Valid;
 import org.example.hospitalmanagement.persistence.model.AdmissionFormData;
 import org.example.hospitalmanagement.business.clinics.ClinicManagementService;
 import org.example.hospitalmanagement.business.patients.AdmissionManagementService;
-import org.example.hospitalmanagement.business.patients.Patient;
+import org.example.hospitalmanagement.business.patients.PatientFromServer;
 import org.example.hospitalmanagement.business.patients.PatientManagementService;
 import org.example.hospitalmanagement.business.patients.VisitManagementService;
+import org.example.hospitalmanagement.persistence.model.Patient;
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -41,14 +44,21 @@ public class PatientController {
     }
 
     @RequestMapping(value="patients/profile",method = RequestMethod.POST, params = "showVisits")
-    public String showVisitsOfPatient(@ModelAttribute Patient patient, Model model) {
-        model.addAttribute("visits" ,visitManagementService.getVisitsByPatientId(patient.getId()));
-        model.addAttribute("patient", patient);
+    public String showVisitsOfPatient(@RequestParam Long id, Model model) {
+        model.addAttribute("visits" ,visitManagementService.getVisitsByPatientId(id));
+        model.addAttribute("patient", patientManagementService.getPatientById(id));
+        return "patients/profile";
+    }
+
+    @RequestMapping(value="patients/profile",method = RequestMethod.POST, params = "showAdmissions")
+    public String showAdmissionsOfPatient(@RequestParam Long id, Model model) {
+        model.addAttribute("admissions" ,admissionManagementService.getAdmissionsByPatient(id));
+        model.addAttribute("patient", patientManagementService.getPatientById(id));
         return "patients/profile";
     }
 
     @RequestMapping(value="patients/profile",method = RequestMethod.POST, params = "edit")
-    public String editPatientProfile(@ModelAttribute Patient patient, Model model) {
+    public String editPatientProfile(@ModelAttribute PatientFromServer patient, Model model) {
         //if(visits) {
        //     model.addAttribute("visits" ,visitManagementService.getVisitsByPatientId(patient.getId()));
        // }
@@ -57,7 +67,7 @@ public class PatientController {
     }
 
     @RequestMapping(value="patients/profile",method = RequestMethod.POST, params = "createAdmission")
-    public String createAdmissionForPatient(@ModelAttribute Patient patient, Model model) {
+    public String createAdmissionForPatient(@ModelAttribute PatientFromServer patient, Model model) {
         //if(visits) {
         //     model.addAttribute("visits" ,visitManagementService.getVisitsByPatientId(patient.getId()));
         // }
@@ -69,18 +79,49 @@ public class PatientController {
 
     @RequestMapping("patients/showCreateForm")
     public String showCreateForm(Model model) {
-        model.addAttribute("patient", new Patient());
+        model.addAttribute("patient", new PatientFromServer());
+        model.addAttribute("patientFound", true);
+        model.addAttribute("duplicateInsuranceNumber", false);
         return "patients/create";
     }
 
-    @PostMapping("patients/addNewPatient")
-    public String createPatient(@Valid @ModelAttribute Patient patient, BindingResult bindingResult) {
+
+    @PostMapping(value="patients/addNewPatient", params = "getFromServer")
+    public String getPatientFromServer(@Valid @ModelAttribute("patient") PatientFromServer patient, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("patientFound", true);
             return "patients/create";
         }
-        patientManagementService.addPatient(patient);
-        return "redirect:/patients/list";
+
+        PatientFromServer patientFromServer = patientManagementService.getPatientByInsuranceNumber(String.valueOf(patient.getInsuranceNumber()));
+
+        if(patientFromServer == null) {
+            model.addAttribute("patient", patient);
+            model.addAttribute("patientFound", false);
+            model.addAttribute("duplicateInsuranceNumber", false);
+        }else {
+            Patient localPatient = patientManagementService.transformPatientFromServertoPatient(patientFromServer);
+            model.addAttribute("patient", localPatient);
+            model.addAttribute("patientFound", true);
+            model.addAttribute("duplicateInsuranceNumber", false);
+        }
+        return "patients/create";
     }
 
-
+    @RequestMapping(value="patients/addNewPatient",method = RequestMethod.POST, params = "createNewPatient")
+    public String createNewPatient(@Valid @ModelAttribute("patient") Patient patient, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("duplicateInsuranceNumber", false);
+            model.addAttribute("patientFound", true);
+            return "patients/create";
+        }
+        try {
+            patientManagementService.createNewPatient(patient);
+        }catch (DataIntegrityViolationException e) {
+            model.addAttribute("duplicateInsuranceNumber", true);
+            model.addAttribute("patientFound", true);
+            return "patients/create";
+        }
+        return "redirect:/patients/list";
+    }
 }

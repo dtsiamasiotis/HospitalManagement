@@ -6,12 +6,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        .button-row {
+            display: flex;
+            gap: 10px; /* optional spacing between buttons */
+        }
+    </style>
 </head>
 <body>
-<form th:object="${patient}" th:action="@{/patients/profile}" class="form-horizontal" id="add-patient-form" method="post">
-<input type="hidden" th:field="*{id}"/>
+<!--<form th:object="${patient}" th:action="@{/patients/profile}" class="form-horizontal" id="add-patient-form" method="post">-->
+<!--<input type="hidden" th:field="*{id}"/>
     <input type="hidden" th:field="*{firstName}"/>
-    <input type="hidden" th:field="*{lastName}"/>
+    <input type="hidden" th:field="*{lastName}"/>-->
     <table class="table table-striped" th:object="${patient}">
     <tr>
         <th>First Name</th>
@@ -22,6 +28,10 @@
         <td><b th:text="*{lastName}"></b></td>
     </tr>
         <tr>
+            <th>Date of Birth</th>
+            <td><b th:text="${#temporals.format(patient.dateOfBirth, 'dd-MM-yyyy')}"></b> </td>
+        </tr>
+        <tr>
             <th>Email</th>
             <td><b th:text="*{email}"></b></td>
         </tr>
@@ -29,17 +39,22 @@
             <th>Insurance Number</th>
             <td><b th:text="*{insuranceNumber}"></b></td>
         </tr>
+    </table>
+    <form th:object="${patient}" th:action="@{/patients/profile}" class="form-horizontal" id="add-patient-form" method="post">
+        <input type="hidden" th:field="*{id}" />
+        <div class="button-row">
+            <!--<button type="button"  th:onclick="|window.location.href='/patients/profile?visits=true?patient='+${patient}|" class="btn btn-outline-primary me-2">Show Visits</button>-->
+            <button class="btn btn-outline-primary me-2" type="submit" name="edit">Edit</button>
+            <button class="btn btn-outline-primary me-2" type="submit" name="showAdmissions">Show admissions</button>
+            <button class="btn btn-outline-primary me-2" type="submit" name="showVisits">Show visits</button>
+            <button class="btn btn-outline-primary me-2" type="submit" name="createAdmission">Create Admission</button>
+        </div>
+       </form>
 
-</table>
-    <div class="col-md-1 text-end">
-        <!--<button type="button"  th:onclick="|window.location.href='/patients/profile?visits=true?patient='+${patient}|" class="btn btn-outline-primary me-2">Show Visits</button>-->
-        <button class="btn btn-primary" type="submit" name="edit">Edit</button>
-        <button class="btn btn-primary" type="submit" name="showVisits">Show visits</button>
-        <button class="btn btn-primary" type="submit" name="createAdmission">Create Admission</button>
-    </div>
-</form>
+
+<!--</form>-->
 <div class="container-mt3">
-<table th:if = "${visits}!=null" class="table table-striped">
+<table th:if = "${visits != null and #lists.size(visits) > 0}" class="table table-striped">
     <thead>
     <tr>
         <th>Id</th>
@@ -55,8 +70,25 @@
 </table>
 </div>
 
+<div class="container-mt3">
+    <table th:if = "${admissions}!=null" class="table table-striped">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="admission : ${admissions}">
+            <td th:text="${admission.id}"></td>
+            <td th:text="${admission.status}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
-<script src="webjars/5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="../webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
 
 
 </body>

@@ -20,18 +20,15 @@
         <input type="text" class="form-control" th:field="*{email}" id="newPatientEmail" />
         <label for="newPatientInsuranceNumber" class="form-label">Insurance Number</label>
         <input type="text" class="form-control" th:field="*{insuranceNumber}" id="newPatientInsuranceNumber" th:errorclass="error"/>
-       <!-- <span class="help-block" th:if="${#fields.hasErrors('insuranceNumber')}">-->
-            <ul>
-                <li th:each="err : ${#fields.errors('insuranceNumber')}" th:text="${err}" class="error"/>
-            </ul>
-       <!-- </span>-->
+        <ul>
+            <li th:each="err : ${#fields.errors('insuranceNumber')}" th:text="${err}" class="error"/>
+        </ul>
     </div>
-    <div class="form-group">
-        <div class="col-md-1 text-end">
-            <button
-                    class="btn btn-outline-primary me-2" type="submit">Add
-                Patient</button>
-        </div>
+    <div class="button-row">
+        <button class="btn btn-outline-primary me-2" type="submit" name="getFromServer">Get from server</button>
+        <button class="btn btn-outline-primary me-2" type="submit" name="createNewPatient">Add Patient</button>
+        <p th:unless="${patientFound}">A patient with this insurance number does not exist!</p>
+        <p th:if="${duplicateInsuranceNumber}">A patient with this insurance number already exists!</p>
     </div>
 </form>
 </body>

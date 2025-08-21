@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface ClinicRepository extends ListCrudRepository<Clinic, Long> {
     List<Clinic> findAll();
-    Clinic findById(int id);
+    //Clinic findById(long id);
 }

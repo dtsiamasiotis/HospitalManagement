@@ -5,10 +5,8 @@ import org.example.hospitalmanagement.persistence.model.Patient;
 import org.springframework.data.repository.ListCrudRepository;
 
 import java.util.List;
-import java.util.Optional;
 
-public interface AdmissionRepository extends ListCrudRepository<Admission, Long> {
-    List<Admission> findAll();
-
-    Optional<List<Admission>> findAdmissionsByPatientId(long id);
+public interface PatientRepository extends ListCrudRepository<Patient, Long> {
+    List<Patient> findAll();
+    Patient findById(long id);
 }

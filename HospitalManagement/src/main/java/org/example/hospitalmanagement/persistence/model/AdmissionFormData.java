@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -11,8 +12,8 @@ import java.time.LocalDateTime;
 public class AdmissionFormData {
     private Long clinicId;
     private Long patientId;
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private LocalDateTime startDate;
+    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    private LocalDateTime startDateTime;
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDateTime endDate;
 }

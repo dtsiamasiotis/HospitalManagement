@@ -87,7 +87,12 @@
             </thead>
             <tbody>
             <tr th:each="admission : ${admissions}">
-                <td th:text="${admission.clinic.id}"></td>
+                <td th:text="${admission.clinic.name}"></td>
+                <td th:text="${admission.patient.firstName}"></td>
+                <td th:text="${admission.patient.lastName}"></td>
+                <td th:text="${admission.status}"></td>
+                <td th:text="${#temporals.format(admission.startDate,'dd-MM-yyyy')}"></td>
+                <td th:text="${#temporals.format(admission.endDate,'dd-MM-yyyy')}"></td>
             </tr>
             </tbody>
         </table>
@@ -102,7 +107,7 @@
 </main>
 
 
-<script src="webjars/5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
 
 
 

@@ -18,11 +18,6 @@ public class VisitManagementService {
 
     public List<Visit> getVisitsByPatientId(long id){
         Optional<List<Visit>> visits = visitRepository.findVisitsByPatientId(id);
-        if(!visits.isEmpty()){
-            return visits.get();
-        }
-        else {
-            return null;
-        }
+        return visits.orElse(null);
     }
 }

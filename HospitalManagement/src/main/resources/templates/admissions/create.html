@@ -17,7 +17,7 @@
         </div>
         <div>
             <label for="admissionStartDate">Start date:</label>
-            <input type="date" th:field="${admission.startDate}" id="admissionStartDate"/>
+            <input type="datetime-local" th:field="${admission.startDateTime}" id="admissionStartDate"/>
         </div>
     <div>
         <input type="hidden" th:field="*{patientId}">

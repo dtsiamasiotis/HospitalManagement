@@ -1,23 +1,30 @@
 package org.example.hospitalmanagement.api;
 
+import org.example.hospitalmanagement.business.patients.PatientManagementService;
 import org.example.hospitalmanagement.persistence.model.AdmissionFormData;
 import org.example.hospitalmanagement.business.clinics.ClinicManagementService;
 import org.example.hospitalmanagement.business.patients.AdmissionManagementService;
 import org.example.hospitalmanagement.persistence.model.Admission;
+import org.example.hospitalmanagement.persistence.model.AdmissionStatus;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 @Controller
 public class AdmissionController {
 
-      private AdmissionManagementService admissionManagementService;
+    private final PatientManagementService patientManagementService;
+    private AdmissionManagementService admissionManagementService;
       private ClinicManagementService clinicManagementService;
    // private VisitManagementService visitManagementService;
 
-    public AdmissionController(AdmissionManagementService admissionManagementService, ClinicManagementService clinicManagementService) {
+    public AdmissionController(AdmissionManagementService admissionManagementService, ClinicManagementService clinicManagementService, PatientManagementService patientManagementService) {
         this.admissionManagementService = admissionManagementService;
         this.clinicManagementService = clinicManagementService;
+        this.patientManagementService = patientManagementService;
     }
 
 
@@ -64,9 +71,10 @@ public class AdmissionController {
     @PostMapping("admissions/addNewAdmission")
     public String createAdmission(@ModelAttribute AdmissionFormData admissionFormData) {
         Admission admission = new Admission();
-        admission.setPatientId(admissionFormData.getPatientId());
+        admission.setPatient(patientManagementService.getPatientById(admissionFormData.getPatientId()));
         admission.setClinic(clinicManagementService.getClinicById(admissionFormData.getClinicId()).orElseThrow());
-        admission.setStartDate(admissionFormData.getStartDate());
+        admission.setStartDate(admissionFormData.getStartDateTime());
+        admission.setStatus(AdmissionStatus.ONGOING);
         admissionManagementService.addAdmission(admission);
         return "redirect:/admissions/list";
     }

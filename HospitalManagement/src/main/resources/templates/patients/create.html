@@ -9,7 +9,25 @@
 </style>
 <body>
 
-<h2>Patient</h2>
+<div class="container">
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            <li><a href="/dashboard" class="nav-link px-2 link-secondary">Home</a></li>
+            <li><a href="#" class="nav-link px-2 link-dark">Clinics</a></li>
+            <li><a href="/personnel/list" class="nav-link px-2 link-dark">Personnel</a></li>
+            <li>
+                <a href="/patients/list" class="nav-link px-2 link-dark">Patients</a>
+            </li>
+        </ul>
+
+        <div class="col-md-3 text-end">
+            <button type="button" class="btn btn-outline-primary me-2">Logout</button>
+        </div>
+    </header>
+</div>
+
+<h2>Create Patient</h2>
 <form th:object="${patient}" th:action="@{/patients/addNewPatient}" class="form-horizontal" id="add-patient-form" method="post">
     <div class="form-group has-feedback">
         <label for="newPatientFirstName" class="form-label">First Name</label>

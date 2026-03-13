@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+
+<link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}"/>
+<style>
+    .error {
+        color: red;
+    }
+</style>
+<body>
+
+<h2>Create Personnel</h2>
+<form th:object="${personnel}" th:action="@{/personnel/addNewPersonnel}" class="form-horizontal" id="add-personnel-form" method="post">
+    <div class="form-group has-feedback">
+        <label for="newPersonnelFirstName" class="form-label">First Name</label>
+        <input type="text" class="form-control" th:field="*{firstName}" id="newPersonnelFirstName" th:errorclass="error">
+            <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="error"></p>
+        <label for="newPersonnelLastName" class="form-label">Last Name</label>
+        <input type="text" class="form-control" th:field="*{lastName}" id="newPersonnelLastName" th:errorclass="error">
+            <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="error"></p>
+        <label for="newPersonnelEmail" class="form-label">Email</label>
+        <input type="text" class="form-control" th:field="*{email}" id="newPersonnelEmail" />
+        <label for="newPersonnelOccupation" class="form-label">Occupation</label>
+        <select id="newPersonnelOccupation" th:field="*{occupation}" name="occupationValues">
+            <option th:each="occupationValue : ${occupationValues}" th:value="${occupationValue}" th:text="${occupationValue}"></option>
+        </select>
+    </div>
+    <div class="button-row">
+        <button class="btn btn-outline-primary me-2" type="submit" name="createNewPersonnel">Add Personnel</button>
+    </div>
+</form>
+</body>
+</html>

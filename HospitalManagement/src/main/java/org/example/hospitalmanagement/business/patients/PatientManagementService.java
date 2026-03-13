@@ -45,6 +45,10 @@ public class PatientManagementService {
 
 
     }
+    
+    public void updatePatient(Patient patient) {
+        patientRepository.save(patient);
+    }
 
     public PatientFromServer getPatientByInsuranceNumber(String insuranceNumber) {
         //return restTemplate.getForObject("http://localhost:8080/getPatientByInsuranceNumber?insuranceNumber=" + insuranceNumber, Optional<PatientFromServer.class>);

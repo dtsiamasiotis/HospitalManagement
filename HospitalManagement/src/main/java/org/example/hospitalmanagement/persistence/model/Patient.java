@@ -22,4 +22,6 @@ public class Patient {
     @Column(unique = true, nullable = false)
     @Positive
     private Long insuranceNumber;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Bed bed;
 }

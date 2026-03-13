@@ -8,17 +8,45 @@
     <title>Title</title>
 </head>
 <body>
+<div th:insert="~{navigation_header::navigation_header}"></div>
+<h2>Employee Profile</h2>
 <table class="table table-striped" th:object="${personnel}">
     <tr>
         <th>Clinic id</th>
         <td><b th:text="*{clinicId}"></b></td>
     </tr>
     <tr>
+        <th>First Name</th>
+        <td><b th:text="*{firstName}"></b></td>
+    </tr>
+    <tr>
+        <th>Last Name</th>
+        <td><b th:text="*{lastName}"></b></td>
+    </tr>
+    <tr>
+        <th>Email</th>
+        <td><b th:text="*{email}"></b></td>
+    </tr>
+    <tr>
         <th>Occupation</th>
         <td><b th:text="*{occupation}"></b></td>
     </tr>
+    <tr th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+        <th>Base salary</th>
+        <td><b th:text="*{baseSalary}"></b></td>
+    </tr>
 
 </table>
+
+<div class="col-md-1 text-end">
+    <form th:object="${personnel}" th:action="@{/personnel/createSalaryPdf}" method="post">
+        <input type="hidden" th:field="${personnel.id}"/>
+        <input type="hidden" th:field="${personnel.firstName}"/>
+        <input type="hidden" th:field="${personnel.lastName}"/>
+        <input type="hidden" th:field="${personnel.baseSalary}"/>
+        <button type="submit" class="btn btn-outline-primary me-2" th:action="@{/personnel/createSalaryPdf}">Create pdf</button>
+    </form>
+</div>
 
 <script src="webjars/5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

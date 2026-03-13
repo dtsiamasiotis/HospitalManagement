@@ -72,7 +72,7 @@ public class PatientController {
         //     model.addAttribute("visits" ,visitManagementService.getVisitsByPatientId(patient.getId()));
         // }
         model.addAttribute("patient", patient);
-        model.addAttribute("clinics", clinicManagementService.getAllClinics());
+        model.addAttribute("clinics", clinicManagementService.getClinicsWithAvailableBeds());
         model.addAttribute("admission", AdmissionFormData.builder().patientId(patient.getId()).build());
         return "admissions/create";
     }
@@ -122,6 +122,12 @@ public class PatientController {
             model.addAttribute("patientFound", true);
             return "patients/create";
         }
+        return "redirect:/patients/list";
+    }
+    
+    @PostMapping(value="patients/updatePatient")
+    public String updateProfile(@Valid @ModelAttribute("patient") Patient patient) {
+        patientManagementService.updatePatient(patient);
         return "redirect:/patients/list";
     }
 }

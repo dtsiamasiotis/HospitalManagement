@@ -11,4 +11,5 @@ public interface AdmissionRepository extends ListCrudRepository<Admission, Long>
     List<Admission> findAll();
 
     Optional<List<Admission>> findAdmissionsByPatientId(long id);
+    Optional<Admission> findAdmissionById(long id);
 }

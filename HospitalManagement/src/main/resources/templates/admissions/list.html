@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.84.0">
-    <title>Headers · Bootstrap v5.0</title>
+    <title>Hospital Management</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/headers/">
 
@@ -59,30 +59,18 @@
 
 <main>
 
-    <div class="container">
-        <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-
-            <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="#" class="nav-link px-2 link-secondary">Home</a></li>
-                <li><a href="#" class="nav-link px-2 link-dark">Clinics</a></li>
-                <li><a href="/personnel/list" class="nav-link px-2 link-dark">Personnel</a></li>
-                <li>
-                    <a href="/patients/list" class="nav-link px-2 link-dark">Patients</a>
-                </li>
-                <li><a href="/admissions/list" class="nav-link px-2 link-dark">Admissions</a></li>
-            </ul>
-
-            <div class="col-md-3 text-end">
-                <button type="button" class="btn btn-outline-primary me-2">Logout</button>
-            </div>
-        </header>
-    </div>
+    <div th:insert="~{navigation_header::navigation_header}"></div>
 
     <div class="container-mt3">
         <table class="table table-hover">
             <thead>
             <tr>
-                <th>Clinic id</th>
+                <th>Clinic Name</th>
+                <th>Patient First Name</th>
+                <th>Patient Last Name</th>
+                <th>Status</th>
+                <th>Start Date</th>
+                <th>End Date</th>
             </tr>
             </thead>
             <tbody>
@@ -109,7 +97,23 @@
 
 <script src="../webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
 
+<script>
+    var clinics = document.getElementById("clinics");
+    clinics.classList.remove('active');
+    clinics.setAttribute("aria-current", "none");
 
+    var personnel = document.getElementById("personnel");
+    personnel.classList.remove('active');
+    personnel.setAttribute("aria-current", "none");
+
+    var patients = document.getElementById("patients");
+    patients.classList.remove('active');
+    patients.setAttribute("aria-current", "page");
+
+    var admissions = document.getElementById("admissions");
+    admissions.classList.add('active');
+    admissions.setAttribute("aria-current", "page");
+</script>
 
 </body>
 </html>

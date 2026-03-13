@@ -1,8 +1,10 @@
 package org.example.hospitalmanagement.persistence.model;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -19,5 +21,11 @@ public class Clinic {
 
     private String name;
 
+    public int availableBeds() {
+        if(beds.size()<numberOfBeds)
+            return numberOfBeds-beds.size();
+        else
+            return (int) beds.stream().filter((bed)->bed.getPatient()==null).count();
+    }
 
 }

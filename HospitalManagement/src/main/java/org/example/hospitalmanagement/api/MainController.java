@@ -8,8 +8,13 @@ public class MainController {
 
 
 
-    @RequestMapping("dashboard")
+    @GetMapping("dashboard")
     public String showDashboard() {
         return "dashboard";
+    }
+
+    @GetMapping("login")
+    public String login() {
+        return "login";
     }
 }

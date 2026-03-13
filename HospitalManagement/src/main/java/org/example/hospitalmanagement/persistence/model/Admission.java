@@ -25,6 +25,11 @@ public class Admission {
 
     //@DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime startDate;
-
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime endDate;
+
+    @Override
+    public String toString() {
+        return "Admission:" + id;
+    }
 }

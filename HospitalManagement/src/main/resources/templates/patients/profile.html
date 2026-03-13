@@ -14,6 +14,8 @@
     </style>
 </head>
 <body>
+<div th:insert="~{navigation_header::navigation_header}"></div>
+<h2>Patient Profile</h2>
 <!--<form th:object="${patient}" th:action="@{/patients/profile}" class="form-horizontal" id="add-patient-form" method="post">-->
 <!--<input type="hidden" th:field="*{id}"/>
     <input type="hidden" th:field="*{firstName}"/>
@@ -76,12 +78,26 @@
         <tr>
             <th>Id</th>
             <th>Status</th>
+            <th>Start Date</th>
+            <th>End Date</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="admission : ${admissions}">
             <td th:text="${admission.id}"></td>
             <td th:text="${admission.status}"></td>
+            <td th:text="${#temporals.format(admission.startDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
+            <td th:text="${#temporals.format(admission.endDate, 'dd-MM-yyyy HH:mm:ss')}"></td>
+            <td>
+                <form th:action="@{/admissions/completeAdmission}"
+                      method="post"
+                      style="display:inline;">
+                    <input type="hidden" name="admissionId" th:value="${admission.id}"/>
+                   <button type="submit" th:if="${admission.getStatus() == admission.getStatus().ONGOING}" class="btn btn-primary btn-sm" name="completeAdmission">
+                    Complete
+                   </button>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>
